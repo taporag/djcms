@@ -25,7 +25,7 @@ SECRET_KEY = '#-e&v=_rd)1l#coqx1-u#&ofqn*)aba7vxf-rmsi$b1z&ir6#x'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['75a9f485.ngrok.io', '127.0.0.1', 'localhost']
 
 
 # Application definition
@@ -38,8 +38,11 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',    
     'users',
+    'appearance',
     'store',
     'customers',
+    'cart',
+    'pages',
 ]
 
 MIDDLEWARE = [
@@ -53,11 +56,11 @@ MIDDLEWARE = [
 ]
 
 ROOT_URLCONF = 'djcms.urls'
-
+CURRENT_THEME = 'themes/starter'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [os.path.join(BASE_DIR, CURRENT_THEME)],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -65,10 +68,31 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'store.context_processors.all_products',
             ],
         },
     },
+    # {
+    #     'BACKEND': 'django.template.backends.jinja2.Jinja2',
+    #     'DIRS': [os.path.join(BASE_DIR, CURRENT_THEME)],
+    #     'APP_DIRS': True,
+    #     'OPTIONS': {
+    #         'environment': 'djcms.jinja2.environment',
+    #         'context_processors': [
+    #             'django.template.context_processors.debug',
+    #             'django.template.context_processors.request',
+    #             'django.contrib.auth.context_processors.auth',
+    #             'django.contrib.messages.context_processors.messages',
+    #         ],            
+    #     },
+    # },
 ]
+CACHES = {
+    'default': {
+        'SESSION_ENGINE': 'django.contrib.sessions.backends.cached_db',
+        'BACKEND': 'django.core.cache.backends.db.DatabaseCache',
+    }
+}
 AUTH_USER_MODEL = 'users.User'
 WSGI_APPLICATION = 'djcms.wsgi.application'
 
@@ -82,6 +106,8 @@ DATABASES = {
         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
     }
 }
+DATE_FORMAT = 'N, j, Y'
+DATETIME_FORMAT = 'N, j, Y, P'
 
 
 # Password validation
@@ -108,7 +134,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Asia/Dhaka'
 
 USE_I18N = True
 
@@ -122,3 +148,12 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 MEDIA_URL = '/uploads/'
+STATIC_ROOT = os.path.join(os.path.dirname(BASE_DIR), 'static_cdn')
+MEDIA_ROOT = os.path.join(os.path.dirname(BASE_DIR), 'media_cdn')
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, 'static')
+]
+# STATICFILES_STORAGE = [
+#     'django.contrib.staticfiles.finders.FileSystemFinder',
+#     'django.contrib.staticfiles.finders.AppDirectoriesFinder',
+# ]

@@ -1,0 +1,26 @@
+{% extends 'layouts/base.html' %}
+
+{% block page_content %}
+    <div class="container">
+        <div class="row">        
+            <div class="col">
+                <div class="prductImages">
+                {% if product.featured_image %}
+                    <img src="{{product.featured_image.url}}" alt="{{object.title}}">
+                {% endif %}
+                </div>
+            </div>
+            <div class="col">
+                <h2>{{product.title}} {{prduct.url}}</h2>
+                <p><b>{{product.price}}</b> <s>{{product.compare_at_price}}</s></p>
+                <form action="{% url 'cart:add' %}" method="post" class="">
+                    {% csrf_token %}
+                    <input type="hidden" name="id" value="{{product.id}}" >
+                    <input type="number" name="quantity" value="1" min="1" class="form-control">
+                    <button type="submit" class="btn btn-default">Add to Cart</button>
+                </form>
+            </div>
+            
+        </div>
+    </div>
+{% endblock page_content %}
